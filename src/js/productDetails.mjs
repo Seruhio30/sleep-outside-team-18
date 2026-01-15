@@ -40,7 +40,7 @@ export default class ProductDetails {
     }
 }
 
-function productDetailsTemplate(product){
+function productDetailsTemplate(product) {
     document.querySelector("h2").textContent = product.Brand.name;
     document.querySelector("h3").textContent = product.NameWithoutBrand;
     const productImage = document.querySelector("img");
@@ -50,9 +50,11 @@ function productDetailsTemplate(product){
     document.getElementsByClassName("product-card__price").textContent = product.FinalPrice;
     document.getElementsByClassName("product__color").textContent = product.Colors[0].ColorName;
     document.getElementsByClassName("product__description").textContent = product.DescriptionHtmlSimple;
-     
+
     document.getElementById("addToCart").dataset.id = product.Id;
 
 
 }
+
+//prueba
 
