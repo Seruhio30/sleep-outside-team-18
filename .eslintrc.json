@@ -1,12 +1,6 @@
 {
-  "plugins": [
-    "import"
-  ],
-  "extends": [
-    "eslint:recommended",
-    "plugin:import/errors",
-    "prettier"
-  ],
+  "plugins": ["import"],
+  "extends": ["eslint:recommended", "plugin:import/errors", "prettier"],
   "env": {
     "es6": true,
     "browser": true,
@@ -23,10 +17,7 @@
         "argsIgnorePattern": "res|next|^err"
       }
     ],
-    "arrow-body-style": [
-      2,
-      "as-needed"
-    ],
+    "arrow-body-style": [2, "as-needed"],
     "no-param-reassign": [
       2,
       {
@@ -34,13 +25,7 @@
       }
     ],
     "no-console": 1,
-    "quotes": [
-      "error",
-      "double",
-      {
-        "allowTemplateLiterals": true
-      }
-    ],
+    "quotes": ["error", "double", { "allowTemplateLiterals": true }],
     "func-names": 0,
     "space-unary-ops": 2,
     "space-in-parens": "error",
@@ -55,14 +40,7 @@
       2,
       {
         "hoist": "all",
-        "allow": [
-          "resolve",
-          "reject",
-          "done",
-          "next",
-          "err",
-          "error"
-        ]
+        "allow": ["resolve", "reject", "done", "next", "err", "error"]
       }
     ],
     "no-unused-expressions": "off"
