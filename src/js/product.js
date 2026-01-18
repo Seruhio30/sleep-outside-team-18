@@ -1,4 +1,4 @@
-import { getParam } from "./utils.mjs";
+import { getParam, updateCartCount } from "./utils.mjs";
 import ProductData from "./ProductData.mjs";
 import ProductDetails from "./productDetails.mjs";
 
@@ -8,6 +8,9 @@ const productId = getParam("product");
 
 const productDet = new ProductDetails(productId, dataSource);
 productDet.init();
+
+// Update cart count in header on page load
+document.addEventListener("DOMContentLoaded", updateCartCount);
 
 /*
 // add to cart button event handler
