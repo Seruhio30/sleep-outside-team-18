@@ -1,4 +1,4 @@
-import AlertJson from "../json/alert.json" assert { type: "json" };
+import AlertJson from "../public/json/alert.json" assert { type: "json" };
 
 export default class Alert {
 
