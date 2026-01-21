@@ -42,25 +42,22 @@ export function renderListWithTemplate(template, parentElement, list, position =
 // Update cart contents number in header
 export function updateCartCount() {
   const cartCountElement = document.querySelector(".cart-count");
+  // Si no existe el elemento (por ejemplo, en una página sin header), salimos sin hacer nada
+  if (!cartCountElement) return;
+
   const cartItems = getLocalStorage("so-cart") || [];
   cartCountElement.textContent = cartItems.length;
-  if (cartItems.length != 0) {
-    cartCountElement.style.visibility = "visible";
-  }
+  cartCountElement.style.visibility = cartItems.length !== 0 ? "visible" : "hidden";
 }
 
 
 
 export function renderWithTemplate(template, parentElement, data, callback) {
-  
-  parentElement.insertAdjacentHTML("afterbegin", template);
   parentElement.innerHTML = template;
-  
-  // if clear is true we need to clear out the contents of the parent.
+
   if (callback) {
-    callback(data)
+    callback(data);
   }
-  //parentElement.insertAdjacentHTML(position, htmlStrings.join(""));
 }
 
 export async function loadTemplate(path) {
@@ -70,11 +67,14 @@ export async function loadTemplate(path) {
 }
 
 export async function loadHeaderFooter() {
-  const headerTemplate = await loadTemplate("../partials/header.html");
+  const headerTemplate = await loadTemplate("/partials/header.html");
   const headerElement = document.querySelector("#main-header");
   renderWithTemplate(headerTemplate, headerElement);
+  
+  // Una vez que el header existe en el DOM, actualizamos el contador del carrito
+  updateCartCount();
 
-  const footerTemplate = await loadTemplate("../partials/footer.html");
+  const footerTemplate = await loadTemplate("/partials/footer.html");
   const footerElement = document.querySelector("#main-footer");
   renderWithTemplate(footerTemplate, footerElement);
 }

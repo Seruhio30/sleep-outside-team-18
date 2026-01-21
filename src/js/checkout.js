@@ -1,7 +1,2 @@
-import { loadHeaderFooter } from "../js/utils.mjs";
-
-document.addEventListener("DOMContentLoaded", () => {
-  updateCartCount();
-
-  loadHeaderFooter();
-});
+import { loadHeaderFooter } from "./utils.mjs";
+loadHeaderFooter();
