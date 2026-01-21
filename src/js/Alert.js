@@ -1,3 +1,5 @@
+import AlertJson from "../json/alert.json" assert { type: "json" };
+
 export default class Alert {
   constructor(mainSelector = "main") {
     this.alerts = [];
