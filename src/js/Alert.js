@@ -1,14 +1,23 @@
 import AlertJson from "../public/json/alert.json" assert { type: "json" };
 
+
+
 export default class Alert {
   constructor(mainSelector = "main") {
-    this.alerts = AlertJson;
+    this.alerts = [];
     this.mainElement = document.querySelector(mainSelector);
   }
 
-  init() {
-    //console.log(this.alerts, "Alert initialized");
+  async init() {
     if (!this.mainElement) return;
+
+    try {
+      const response = await fetch("/json/alert.json");
+      this.alerts = await response.json();
+    } catch (error) {
+      console.error("Error loading alerts:", error);
+      return;
+    }
 
     if (!this.alerts || this.alerts.length === 0) return;
 
