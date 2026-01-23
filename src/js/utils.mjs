@@ -76,7 +76,7 @@ export async function loadHeaderFooter() {
   const headerTemplate = await loadTemplate("/partials/header.html");
   const headerElement = document.querySelector("#main-header");
   renderWithTemplate(headerTemplate, headerElement);
-  
+
   // Una vez que el header existe en el DOM, actualizamos el contador del carrito
   updateCartCount();
 

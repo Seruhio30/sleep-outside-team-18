@@ -33,8 +33,8 @@ function productCardTemplate(product) {
 
     return `
     <li class="product-card">
-      <a href="product_pages/?product=${product.Id}">
-        <img src="${product.Image}" alt="${product.Name}">
+      <a href="../product_pages/?product=${product.Id}">
+        <img src="${product.Images.PrimaryExtraLarge}" alt="${product.Name}">
         <h3 class="card__brand">${product.Brand.Name}</h3>
         <h2 class="card__name">${product.NameWithoutBrand}</h2>
         ${priceHTML}
@@ -59,10 +59,18 @@ export default class ProductList {
         this.listElement = listElement;
     }
 
-    async init() {
+    //Esta parte de cambia por categoria
+    /*async init() {
         const list = await this.dataSource.getData();
         this.renderList(list);
+    }*/
+    async init() {
+        const list = await this.dataSource.getData(this.category);
+        this.renderList(list);
+        //document.querySelector(".title").textContent = this.category;
     }
+
+
 
     renderList(list) {
         // const htmlStrings = list.map(productCardTemplate);
