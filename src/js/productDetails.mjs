@@ -1,4 +1,6 @@
 import { setLocalStorage, updateCartCount } from "./utils.mjs";
+//const baseURL = import.meta.env.VITE_SERVER_URL;
+const baseURL = "https://wdd330-backend.onrender.com/";
 
 export default class ProductDetails {
   constructor(productId, datasource) {
@@ -51,7 +53,6 @@ function productDetailsTemplate(product) {
 
   //const productImage = document.querySelector("img"); //solo selecciona la primera etiqueta <img> en toda la página
   const productImage = document.querySelector(".product-image"); //usamos el class para que la imagen sea dinamica
-
   productImage.src = product.Images.PrimaryExtraLarge;
   productImage.alt = product.NameWithoutBrand;
 

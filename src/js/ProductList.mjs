@@ -69,7 +69,7 @@ export default class ProductList {
         const list = await this.dataSource.getData(this.category);
         this.products = list; // Guardar los productos
         this.renderList(list);
-        //document.querySelector(".title").textContent = this.category;
+        document.querySelector(".title").textContent = this.category;
 
         // Agregar event listener para el selector de ordenamiento
         this.sortListener();
