@@ -22,27 +22,26 @@ export default class ProductDetails {
       .addEventListener("click", this.addProductToCart.bind(this));
   }
 
+
   addProductToCart() {
-    // Leer lo que ya hay en localStorage
     let cart = JSON.parse(localStorage.getItem("so-cart"));
 
-    // Si no existe o no es array, inicializarlo
-    if (!Array.isArray(cart)) {
-      cart = [];
+    if (!Array.isArray(cart)) cart = [];
+
+    // Buscar si ya existe el producto en el carrito
+    const existingItem = cart.find((item) => String(item.Id) === String(this.product.Id));
+
+    if (existingItem) {
+      //Si ya existe, incrementar cantidad
+      existingItem.quantity = (existingItem.quantity || 1) + 1;
+    } else {
+      // Si no existe, agregar con quantity = 1
+      const itemToAdd = { ...this.product, quantity: 1 };
+      cart.push(itemToAdd);
     }
 
-    // Agregar el nuevo producto (usa this.product)
-    cart.push(this.product);
-
-    // Guardar el array completo
     setLocalStorage("so-cart", cart);
-
-    // Actualizar el contador del carrito
     updateCartCount();
-  }
-
-  renderProductDetails() {
-    productDetailsTemplate(this.product);
   }
 }
 
