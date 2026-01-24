@@ -53,8 +53,12 @@ function productDetailsTemplate(product) {
   //const productImage = document.querySelector("img"); //solo selecciona la primera etiqueta <img> en toda la página
   const productImage = document.querySelector(".product-image"); //usamos el class para que la imagen sea dinamica
 
-  productImage.src = product.Image;
+console.log("PRODUCT:", product);
+console.log("IMAGES:", product.Images);
+
+  productImage.src = product.Images?.PrimaryLarge || product.Images?.PrimaryMedium || "";
   productImage.alt = product.NameWithoutBrand;
+
 
   // Calcular descuento
   const discount = calculateDiscount(

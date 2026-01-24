@@ -1,7 +1,3 @@
-import AlertJson from "../public/json/alert.json" assert { type: "json" };
-
-
-
 export default class Alert {
   constructor(mainSelector = "main") {
     this.alerts = [];
@@ -12,6 +8,7 @@ export default class Alert {
     if (!this.mainElement) return;
 
     try {
+      
       const response = await fetch("/json/alert.json");
       this.alerts = await response.json();
     } catch (error) {

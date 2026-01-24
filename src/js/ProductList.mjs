@@ -2,29 +2,30 @@ import { renderListWithTemplate } from "./utils.mjs";
 
 
 function productCardTemplate(product) {
-    // Calcular descuento
-    const discount = calculateDiscount(product.SuggestedRetailPrice, product.FinalPrice);
+  // ✅ DEFINIR imageUrl DENTRO de la función
+  const imageUrl = product.Images?.PrimaryMedium || "";
 
-    // Crear el HTML del precio con o sin descuento
-    let priceHTML = '';
-    if (discount > 0) {
-        priceHTML = `
-            <p class="product-card__price">
-                <span class="discount-badge">${discount}% OFF</span>
-                <span class="original-price">$${product.SuggestedRetailPrice}</span>
-                <span class="final-price">$${product.FinalPrice}</span>
-            </p>
-        `;
-    } else {
-        priceHTML = `<p class="product-card__price">$${product.FinalPrice}</p>`;
-    }
+  const discount = calculateDiscount(
+    product.SuggestedRetailPrice,
+    product.FinalPrice
+  );
 
-    const productLink = `../product_pages/index.html?product=${product.Id}`;
+  let priceHTML = "";
+  if (discount > 0) {
+    priceHTML = `
+      <p class="product-card__price">
+        <span class="discount-badge">${discount}% OFF</span>
+        <span class="original-price">$${product.SuggestedRetailPrice}</span>
+        <span class="final-price">$${product.FinalPrice}</span>
+      </p>
+    `;
+  } else {
+    priceHTML = `<p class="product-card__price">$${product.FinalPrice}</p>`;
+  }
 
-
-    return `
+  return `
     <li class="product-card">
-      <a href="${productLink}">
+      <a href="../product_pages/index.html?product=${product.Id}">
         <img src="${imageUrl}" alt="${product.Name}">
         <h3 class="card__brand">${product.Brand.Name}</h3>
         <h2 class="card__name">${product.NameWithoutBrand}</h2>
@@ -33,6 +34,7 @@ function productCardTemplate(product) {
     </li>
   `;
 }
+
 // Función para calcular el porcentaje de descuento
 function calculateDiscount(suggestedPrice, finalPrice) {
     if (suggestedPrice > finalPrice) {

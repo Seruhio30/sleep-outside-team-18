@@ -1,32 +1,28 @@
-import ProductData from './ProductData.mjs';
-import ProductList from './ProductList.mjs';
-
-import { loadHeaderFooter, getParam } from './utils.mjs';
+import ProductData from "./ProductData.mjs";
+import ProductList from "./ProductList.mjs";
+import { loadHeaderFooter, getParam } from "./utils.mjs";
 
 loadHeaderFooter();
 
-// 1️Obtener la categoría desde la URL (?category=backpacks)
-const category = getParam('category');
+// Obtener la categoría del URL
+const category = getParam("category");
 
-//  Cambiar el título de la página dinámicamente
+// CAMBIAR EL TÍTULO DINÁMICAMENTE
 if (category) {
-  const titleElement = document.querySelector('.listing-title');
+  const titleElement = document.querySelector(".listing-title");
 
-  // Convertir "sleeping-bags" → "Sleeping Bags"
-  const niceCategory = category
-    .split('-')
+  // "sleeping-bags" → "Sleeping Bags"
+  const formattedCategory = category
+    .split("-")
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
+    .join(" ");
 
-  titleElement.textContent = `Top Products: ${niceCategory}`;
+  titleElement.textContent = `Top Products: ${formattedCategory}`;
 }
 
-// Crear el data source (API)
+// Inicializar listado
 const dataSource = new ProductData();
+const listElement = document.querySelector(".product-list");
 
-//  Elemento donde se renderiza la lista
-const listElement = document.querySelector('.product-list');
-
-// Crear y ejecutar el listado
 const myList = new ProductList(category, dataSource, listElement);
 myList.init();
