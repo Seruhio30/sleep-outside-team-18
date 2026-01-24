@@ -1,4 +1,6 @@
 import { setLocalStorage, updateCartCount } from "./utils.mjs";
+//const baseURL = import.meta.env.VITE_SERVER_URL;
+const baseURL = "https://wdd330-backend.onrender.com/";
 
 export default class ProductDetails {
   constructor(productId, datasource) {
@@ -45,13 +47,13 @@ export default class ProductDetails {
 }
 
 function productDetailsTemplate(product) {
-  document.querySelector("h2").textContent = product.Brand.Name;
+  //document.querySelector("h2").textContent = product.Brand.Name;
+  document.querySelector("h2").textContent = product.Category.charAt(0).toUpperCase() + product.Category.slice(1);
   document.querySelector("h3").textContent = product.NameWithoutBrand;
 
   //const productImage = document.querySelector("img"); //solo selecciona la primera etiqueta <img> en toda la página
   const productImage = document.querySelector(".product-image"); //usamos el class para que la imagen sea dinamica
-
-  productImage.src = product.Image;
+  productImage.src = product.Images.PrimaryExtraLarge;
   productImage.alt = product.NameWithoutBrand;
 
   // Calcular descuento
