@@ -11,13 +11,13 @@ const dataSource = new ProductData();
 const element = document.querySelector(".product-list");
 // Solo inicializar ProductList si el elemento existe
 if (element) {
-    const productList = new ProductList(category, dataSource, element);
-    productList.init();
+  const productList = new ProductList(category, dataSource, element);
+  productList.init();
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    updateCartCount();
+  updateCartCount();
 
-    const alert = new Alert("main");
-    alert.init();
+  const alert = new Alert("main");
+  alert.init();
 });
