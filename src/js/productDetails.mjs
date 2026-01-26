@@ -21,21 +21,21 @@ export default class ProductDetails {
   }
 
   addProductToCart() {
-    // Leer lo que ya hay en localStorage
+    // Read what's already in localStorage
     let cart = JSON.parse(localStorage.getItem("so-cart"));
 
-    // Si no existe o no es array, inicializarlo
+    // If it does not exist or is not an array, initialize it
     if (!Array.isArray(cart)) {
       cart = [];
     }
 
-    // Agregar el nuevo producto (usa this.product)
+    // Add the new product (use this.product)
     cart.push(this.product);
 
-    // Guardar el array completo
+    // Save the entire array
     setLocalStorage("so-cart", cart);
 
-    // Actualizar el contador del carrito
+    // Update the shopping cart counter
     updateCartCount();
   }
 
@@ -52,14 +52,14 @@ function productDetailsTemplate(product) {
   productImage.src = product.Image;
   productImage.alt = product.NameWithoutBrand;
 
-  // Calcular descuento
+  // Calculate discount
   const discount = calculateDiscount(
     product.SuggestedRetailPrice,
     product.FinalPrice
   );
   const savings = product.SuggestedRetailPrice - product.FinalPrice;
 
-  // Mostrar precio con descuento
+  // Show discounted price
   const priceElement = document.querySelector(".product-card__price");
   if (discount > 0) {
     priceElement.innerHTML = `
@@ -86,7 +86,7 @@ function productDetailsTemplate(product) {
   document.getElementById("addToCart").dataset.id = product.Id;
 }
 
-// Función para calcular el porcentaje de descuento
+// Function to calculate the discount percentage
 function calculateDiscount(suggestedPrice, finalPrice) {
   if (suggestedPrice > finalPrice) {
     const discount = ((suggestedPrice - finalPrice) / suggestedPrice) * 100;

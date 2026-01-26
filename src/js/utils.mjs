@@ -1,3 +1,5 @@
+// import { loadTemplate, renderWithTemplate } from "./utils.mjs";
+
 // wrapper for querySelector...returns matching element
 export function qs(selector, parent = document) {
   return parent.querySelector(selector);
@@ -42,9 +44,44 @@ export function renderListWithTemplate(template, parentElement, list, position =
 // Update cart contents number in header
 export function updateCartCount() {
   const cartCountElement = document.querySelector(".cart-count");
+
+  // 👇 prevents crashes on pages without header or before header loads
+  if (!cartCountElement) return;
+
   const cartItems = getLocalStorage("so-cart") || [];
   cartCountElement.textContent = cartItems.length;
-  if (cartItems.length != 0) {
+
+  if (cartItems.length !== 0) {
     cartCountElement.style.visibility = "visible";
   }
+}
+
+
+export function renderWithTemplate(template, parentElement, data, callback) {
+  parentElement.innerHTML = template;
+
+  if (callback) {
+    callback(data);
+  }
+}
+
+export async function loadTemplate(path) {
+  const res = await fetch(path);
+  const template = await res.text();
+  return template;
+}
+
+//loadHeaderFooter
+export async function loadHeaderFooter() {
+  // load templates
+  const headerTemplate = await loadTemplate("/partials/header.html");
+  const footerTemplate = await loadTemplate("/partials/footer.html");
+
+  // get DOM elements
+  const headerElement = document.querySelector("#main-header");
+  const footerElement = document.querySelector("#main-footer");
+
+  // render templates
+  renderWithTemplate(headerTemplate, headerElement);
+  renderWithTemplate(footerTemplate, footerElement);
 }

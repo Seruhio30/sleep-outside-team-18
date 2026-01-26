@@ -1,4 +1,7 @@
 import { getLocalStorage, setLocalStorage, updateCartCount } from "./utils.mjs";
+import { loadHeaderFooter } from "./utils.mjs";
+
+loadHeaderFooter();
 
 function renderCartContents() {
   const cartFooter = document.querySelector(".cart-footer");
@@ -46,7 +49,7 @@ function addRemoveFromCartListener() {
 
       const cartItems = getLocalStorage("so-cart") || [];
       const updatedCart = cartItems.filter(
-        (item) => String(item.Id) !== String(idToRemove)
+        (item) => String(item.Id) !== String(idToRemove),
       );
 
       setLocalStorage("so-cart", updatedCart);
