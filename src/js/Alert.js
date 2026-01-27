@@ -1,6 +1,4 @@
-import { loadHeaderFooter } from "./utils.mjs";
-
-loadHeaderFooter();
+import AlertJson from "../public/json/alert.json" assert { type: "json" };
 
 export default class Alert {
   constructor(mainSelector = "main") {

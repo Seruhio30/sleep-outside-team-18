@@ -1,8 +1,11 @@
-import { getParam, updateCartCount } from "./utils.mjs";
+import { getParam, updateCartCount, loadHeaderFooter } from "./utils.mjs";
 import ProductData from "./ProductData.mjs";
 import ProductDetails from "./productDetails.mjs";
 import { loadHeaderFooter } from "./utils.mjs";
 
+loadHeaderFooter();
+
+// Cargar header y footer
 loadHeaderFooter();
 
 const dataSource = new ProductData("tents");

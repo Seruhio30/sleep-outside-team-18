@@ -1,20 +1,36 @@
-import Alert from "./Alert.js";
+/*import Alert from "./Alert.js";
 import ProductData from "./ProductData.mjs";
 import ProductList from "./ProductList.mjs";
-import { updateCartCount } from "./utils.mjs";
-import { loadHeaderFooter } from "./utils.mjs";
+import { updateCartCount, loadHeaderFooter } from "./utils.mjs";
 
+// Cargar header y footer
 loadHeaderFooter();
 
 const dataSource = new ProductData("tents");
 const element = document.querySelector(".product-list");
-const productList = new ProductList("Tents", dataSource, element);
 
-productList.init();
+// Solo inicializar ProductList si el elemento existe
+if (element) {
+  const productList = new ProductList("Tents", dataSource, element);
+  productList.init();
+}
 
 document.addEventListener("DOMContentLoaded", () => {
   updateCartCount();
 
   const alert = new Alert("main");
   alert.init();
-});
+});*/
+
+//import Alert from "./Alert.js";
+//import { updateCartCount, loadHeaderFooter } from "./utils.mjs";
+import { loadHeaderFooter } from "./utils.mjs";
+
+loadHeaderFooter();
+
+/*document.addEventListener("DOMContentLoaded", () => {
+  updateCartCount();
+
+  const alert = new Alert("main");
+  alert.init();
+});*/

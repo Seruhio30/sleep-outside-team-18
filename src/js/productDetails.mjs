@@ -8,58 +8,60 @@ export default class ProductDetails {
   }
 
   async init() {
-    // use the datasource to get the details for the current product
+    // Obtener el producto por id
     this.product = await this.datasource.findProductById(this.productId);
 
-    // render the product details
+    // Renderizar detalles
     this.renderProductDetails();
 
-    // add listener to the Add to Cart button
+    // Listener para Add to Cart
     document
       .getElementById("addToCart")
       .addEventListener("click", this.addProductToCart.bind(this));
   }
 
-  addProductToCart() {
-    // Read what's already in localStorage
-    let cart = JSON.parse(localStorage.getItem("so-cart"));
-
-    // If it does not exist or is not an array, initialize it
-    if (!Array.isArray(cart)) {
-      cart = [];
-    }
-
-    // Add the new product (use this.product)
-    cart.push(this.product);
-
-    // Save the entire array
-    setLocalStorage("so-cart", cart);
-
-    // Update the shopping cart counter
-    updateCartCount();
-  }
-
   renderProductDetails() {
     productDetailsTemplate(this.product);
   }
+
+  //  EXTRA: no duplicar, incrementar quantity
+  addProductToCart() {
+    let cart = JSON.parse(localStorage.getItem("so-cart"));
+    if (!Array.isArray(cart)) cart = [];
+
+    const existingItem = cart.find(
+      (item) => String(item.Id) === String(this.product.Id)
+    );
+
+    if (existingItem) {
+      existingItem.quantity = (existingItem.quantity || 1) + 1;
+    } else {
+      cart.push({ ...this.product, quantity: 1 });
+    }
+
+    setLocalStorage("so-cart", cart);
+    updateCartCount();
+  }
 }
 
+// ---------- TEMPLATE (fuera de la clase) ----------
 function productDetailsTemplate(product) {
-  document.querySelector("h2").textContent = product.Brand.Name;
+  document.querySelector("h2").textContent =
+    product.Category.charAt(0).toUpperCase() + product.Category.slice(1);
+
   document.querySelector("h3").textContent = product.NameWithoutBrand;
 
-  const productImage = document.querySelector("img");
-  productImage.src = product.Image;
+  const productImage = document.querySelector(".product-image");
+  productImage.src =
+    product.Images?.PrimaryExtraLarge ||
+    product.Images?.PrimaryLarge ||
+    product.Images?.PrimaryMedium ||
+    "";
   productImage.alt = product.NameWithoutBrand;
 
-  // Calculate discount
-  const discount = calculateDiscount(
-    product.SuggestedRetailPrice,
-    product.FinalPrice
-  );
+  const discount = calculateDiscount(product.SuggestedRetailPrice, product.FinalPrice);
   const savings = product.SuggestedRetailPrice - product.FinalPrice;
 
-  // Show discounted price
   const priceElement = document.querySelector(".product-card__price");
   if (discount > 0) {
     priceElement.innerHTML = `
@@ -79,14 +81,14 @@ function productDetailsTemplate(product) {
   }
 
   document.querySelector(".product__color").textContent =
-    product.Colors[0].ColorName;
+    product.Colors?.[0]?.ColorName || "";
+
   document.querySelector(".product__description").innerHTML =
     product.DescriptionHtmlSimple;
 
   document.getElementById("addToCart").dataset.id = product.Id;
 }
 
-// Function to calculate the discount percentage
 function calculateDiscount(suggestedPrice, finalPrice) {
   if (suggestedPrice > finalPrice) {
     const discount = ((suggestedPrice - finalPrice) / suggestedPrice) * 100;

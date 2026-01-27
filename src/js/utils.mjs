@@ -33,6 +33,12 @@ export function getParam(param) {
 
 
 export function renderListWithTemplate(template, parentElement, list, position = "afterbegin", clear = false) {
+  // Validar que parentElement existe
+  if (!parentElement) {
+    console.error("Error: parentElement is null in renderListWithTemplate");
+    return;
+  }
+
   const htmlStrings = list.map(template);
   // if clear is true we need to clear out the contents of the parent.
   if (clear) {
@@ -44,17 +50,14 @@ export function renderListWithTemplate(template, parentElement, list, position =
 // Update cart contents number in header
 export function updateCartCount() {
   const cartCountElement = document.querySelector(".cart-count");
-
-  // 👇 prevents crashes on pages without header or before header loads
+  // Si no existe el elemento (por ejemplo, en una página sin header), salimos sin hacer nada
   if (!cartCountElement) return;
 
   const cartItems = getLocalStorage("so-cart") || [];
   cartCountElement.textContent = cartItems.length;
-
-  if (cartItems.length !== 0) {
-    cartCountElement.style.visibility = "visible";
-  }
+  cartCountElement.style.visibility = cartItems.length !== 0 ? "visible" : "hidden";
 }
+
 
 
 export function renderWithTemplate(template, parentElement, data, callback) {
@@ -71,17 +74,15 @@ export async function loadTemplate(path) {
   return template;
 }
 
-//loadHeaderFooter
 export async function loadHeaderFooter() {
-  // load templates
   const headerTemplate = await loadTemplate("/partials/header.html");
-  const footerTemplate = await loadTemplate("/partials/footer.html");
-
-  // get DOM elements
   const headerElement = document.querySelector("#main-header");
-  const footerElement = document.querySelector("#main-footer");
-
-  // render templates
   renderWithTemplate(headerTemplate, headerElement);
+
+  // Una vez que el header existe en el DOM, actualizamos el contador del carrito
+  updateCartCount();
+
+  const footerTemplate = await loadTemplate("/partials/footer.html");
+  const footerElement = document.querySelector("#main-footer");
   renderWithTemplate(footerTemplate, footerElement);
 }
