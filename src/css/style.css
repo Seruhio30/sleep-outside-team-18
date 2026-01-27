@@ -117,17 +117,17 @@ button {
 /* End utility classes */
 
 /* Cart icon styles */
-.cart {
+.cart-icon {
   padding-top: 1em;
   position: relative;
   text-align: center;
 }
 
-.cart svg {
+.cart-icon svg {
   width: 25px;
 }
 
-.cart:hover svg {
+.cart-icon:hover svg {
   fill: gray;
 }
 

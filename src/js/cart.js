@@ -1,4 +1,7 @@
 import { getLocalStorage, setLocalStorage, updateCartCount } from "./utils.mjs";
+import { loadHeaderFooter } from "./utils.mjs";
+
+loadHeaderFooter();
 
 function renderCartContents() {
   const cartFooter = document.querySelector(".cart-footer");

@@ -14,10 +14,10 @@ import { renderListWithTemplate } from "./utils.mjs";
 }*/
 
 function productCardTemplate(product) {
-    // Calcular descuento
+    // Calculate discount
     const discount = calculateDiscount(product.SuggestedRetailPrice, product.FinalPrice);
 
-    // Crear el HTML del precio con o sin descuento
+    // Create the HTML for the price with or without discount
     let priceHTML = '';
     if (discount > 0) {
         priceHTML = `
@@ -43,7 +43,7 @@ function productCardTemplate(product) {
     `;
 }
 
-// Función para calcular el porcentaje de descuento
+// Function to calculate the discount percentage
 function calculateDiscount(suggestedPrice, finalPrice) {
     if (suggestedPrice > finalPrice) {
         const discount = ((suggestedPrice - finalPrice) / suggestedPrice) * 100;
