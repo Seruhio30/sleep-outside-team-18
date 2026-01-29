@@ -7,6 +7,7 @@ export default class ProductDetails {
     this.datasource = datasource;
   }
 
+
   async init() {
     // Obtener el producto por id
     this.product = await this.datasource.findProductById(this.productId);
@@ -26,23 +27,42 @@ export default class ProductDetails {
 
   //  EXTRA: no duplicar, incrementar quantity
   addProductToCart() {
-    let cart = JSON.parse(localStorage.getItem("so-cart"));
-    if (!Array.isArray(cart)) cart = [];
+  const button = document.getElementById("addToCart");
 
-    const existingItem = cart.find(
-      (item) => String(item.Id) === String(this.product.Id)
-    );
+  // prevent spam clicking
+  if (button.classList.contains("success")) return;
 
-    if (existingItem) {
-      existingItem.quantity = (existingItem.quantity || 1) + 1;
-    } else {
-      cart.push({ ...this.product, quantity: 1 });
-    }
+  // 🛒 EXISTING CART LOGIC (unchanged)
+  let cart = JSON.parse(localStorage.getItem("so-cart"));
+  if (!Array.isArray(cart)) cart = [];
 
-    setLocalStorage("so-cart", cart);
-    updateCartCount();
+  const existingItem = cart.find(
+    (item) => String(item.Id) === String(this.product.Id)
+  );
+
+  if (existingItem) {
+    existingItem.quantity = (existingItem.quantity || 1) + 1;
+  } else {
+    cart.push({ ...this.product, quantity: 1 });
   }
-}
+
+  setLocalStorage("so-cart", cart);
+  updateCartCount();
+
+  // 🎉 SUCCESS FEEDBACK (new)
+  const originalText = button.textContent;
+
+  button.classList.add("success");
+  button.textContent = "✔ Added!";
+  button.disabled = true;
+
+  setTimeout(() => {
+    button.classList.remove("success");
+    button.textContent = originalText;
+    button.disabled = false;
+  }, 1200);
+}}
+
 
 // ---------- TEMPLATE (fuera de la clase) ----------
 function productDetailsTemplate(product) {
