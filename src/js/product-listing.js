@@ -3,13 +3,13 @@ import ProductData from "./ProductData.mjs";
 import ProductList from "./ProductList.mjs";
 import Alert from "./Alert.js";
 
-// Cargar header y footer
+// Load header and footer
 loadHeaderFooter();
 
 const category = getParam("category");
 const dataSource = new ProductData();
 const element = document.querySelector(".product-list");
-// Solo inicializar ProductList si el elemento existe
+// Initialize ProductList only if the item exists
 if (element) {
     const productList = new ProductList(category, dataSource, element);
     productList.init();
