@@ -85,30 +85,40 @@ export default class CheckoutProcess {
     }));
   }
 
- // required by activity
-async checkout(form) {
-  // asegurarse de que los totales estén calculados
-  this.calculateOrderTotal();
+  // required by activity
+  async checkout(form) {
+    // asegurarse de que los totales estén calculados
+    this.calculateOrderTotal();
 
-  // convertir form a objeto
-  const formData = new FormData(form);
-  const order = formDataToJSON(formData);
+    // convertir form a objeto
+    const formData = new FormData(form);
+    const order = formDataToJSON(formData);
 
-  // convertir expiration si viene como YYYY-MM
-  if (order.expiration && order.expiration.includes("-")) {
-    const [year, month] = order.expiration.split("-");
-    order.expiration = `${month}/${year.slice(2)}`;
+    // convertir expiration si viene como YYYY-MM
+    if (order.expiration && order.expiration.includes("-")) {
+      const [year, month] = order.expiration.split("-");
+      order.expiration = `${month}/${year.slice(2)}`;
+    }
+
+    // completar objeto como espera el server
+    order.orderDate = new Date().toISOString();
+    order.items = this.packageItems(this.list);
+    order.orderTotal = this.orderTotal.toFixed(2);
+    order.shipping = this.shipping;
+    order.tax = this.tax.toFixed(2);
+    console.log("order:");
+    console.log(order);
+
+    // enviar orden al servidor
+    //await this.services.checkout(order);
+    try {
+      const response = await this.services.checkout(order);
+      console.log("response:");
+      console.log(response);
+    } catch (err) {
+      console.log(err);
+    }
+
   }
-
-  // completar objeto como espera el server
-  order.orderDate = new Date().toISOString();
-  order.items = this.packageItems(this.list);
-  order.orderTotal = this.orderTotal.toFixed(2);
-  order.shipping = this.shipping;
-  order.tax = this.tax.toFixed(2);
-
-  // enviar orden al servidor
-  await this.services.checkout(order);
-}
 
 }
