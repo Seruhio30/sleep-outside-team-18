@@ -90,7 +90,7 @@ p {
   margin-top: -1.3em;
 }
 
-.logo--square > div {
+.logo--square>div {
   margin-top: -1.7em;
 }
 
@@ -433,8 +433,8 @@ footer {
   }
 
   .product-image {
-  width: 70%;
-}
+    width: 70%;
+  }
 }
 
 @media (max-width: 480px) {
@@ -480,4 +480,29 @@ footer {
 #sort-select:focus {
   outline: 2px solid #007bff;
   border-color: #007bff;
+}
+
+/* Animación para el carrito */
+.cart a {
+  display: inline-block;
+}
+
+@keyframes shake {
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-5px) scale(1.1);
+  }
+
+  75% {
+    transform: translateX(5px) scale(1.1);
+  }
+}
+
+.cart-animate {
+  animation: shake 0.5s ease;
 }

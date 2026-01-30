@@ -93,3 +93,32 @@ export function formDataToJSON(formData) {
   }
   return obj;
 }
+
+// Animate cart icon
+export function animateCart() {
+  //link of cart icon
+  const cart = document.querySelector('.cart a');
+
+  if (cart) {
+    // add animate class
+    cart.classList.add('cart-animate');
+
+    // Remove class after 500ms
+    setTimeout(() => {
+      cart.classList.remove('cart-animate');
+    }, 500);
+  } else {
+    console.warn('The shopping cart link could not be found.');
+  }
+}
+
+// Animate cart count
+export function animateCartCount() {
+  const count = document.querySelector('.cart-count');
+  if (count) {
+    count.style.transform = 'scale(1.5)';
+    setTimeout(() => {
+      count.style.transform = 'scale(1)';
+    }, 300);
+  }
+}
