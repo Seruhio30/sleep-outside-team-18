@@ -149,13 +149,10 @@ export function alertMessage(message, scroll = true, duration = 6000) {
   const alert = document.createElement("div");
   alert.classList.add("alert");
 
-  // Determinar si el mensaje es largo
-  const isLongMessage = message.length > 50;
-  const messageClass = isLongMessage ? "alert-message long" : "alert-message";
-
+  // Permitir HTML en el mensaje (para <br>)
   alert.innerHTML = `
     <div class="alert-grid">
-      <p class="${messageClass}">${message}</p>
+      <p class="alert-message">${message}</p>
       <button class="alert-close" aria-label="Close alert">×</button>
     </div>
   `;

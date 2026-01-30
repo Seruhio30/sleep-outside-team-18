@@ -115,28 +115,14 @@ export default class CheckoutProcess {
       setLocalStorage("so-cart", []);
       location.assign("/checkout/success.html");
     } catch (err) {
-      /*console.log("Error details:", err);
-      removeAllAlerts();
-      alertMessage(err.message);*/
       console.log("Error details:", err);
       removeAllAlerts();
 
-      let displayMessage = "Payment information invalid. Please verify your details.";
+      // Siempre mostrar el mensaje del error
+      alertMessage(err.message);
 
-      if (err.message && typeof err.message === 'object') {
-        const errorObj = err.message;
-        for (const key in errorObj) {
-          if (typeof errorObj[key] === 'string') {
-            displayMessage = errorObj[key];
-            break;
-          }
-        }
-      } else if (typeof err.message === 'string') {
-        displayMessage = err.message;
-      }
-
-      // Llamar con el mensaje específico
-      alertMessage(displayMessage);
+      // Si quieres mostrar un segundo mensaje genérico también
+      alertMessage("Please check all payment details and try again.");
     }
   }
 
