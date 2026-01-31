@@ -42,24 +42,21 @@ function cartItemTemplate(item) {
   </a>
   <a href="#"><h2 class="card__name">${item.Name}</h2></a>
     <p class="cart-card__color">${item.Colors[0].ColorName}</p>
-    <div class="cart-card__quantity-container">
-      <label for="qty-${item.Id}">Quantity:</label>
-      <input 
-        type="number" 
-        id="qty-${item.Id}" 
-        class="cart-card__quantity-input" 
-        data-id="${item.Id}" 
-        value="${quantity}" 
-        min="1" 
-        max="999"
-      />
-    </div>
-    <p class="cart-card__price">$${itemTotal.toFixed(2)}</p>
-    
-    <p class="cart-card__quantity">qty: ${item.quantity || 1}</p>
+   <div class="cart-card__quantity-container">
+  <label for="qty-${item.Id}">Quantity:</label>
+  <input 
+    type="number" 
+    id="qty-${item.Id}" 
+    class="cart-card__quantity-input" 
+    data-id="${item.Id}" 
+    value="${quantity}" 
+    min="1" 
+    max="999"
+  />
+</div>
+<p class="cart-card__price">$${itemTotal.toFixed(2)}</p>
+<span data-id="${item.Id}" class="cart-card__remove">x</span>
 
-    <p class="cart-card__price">$${item.FinalPrice}</p>
-    <span data-id="${item.Id}" class="cart-card__remove">x</span>
   </li>`;
 }
 
