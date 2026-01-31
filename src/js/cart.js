@@ -1,9 +1,12 @@
 import { getLocalStorage, setLocalStorage, updateCartCount } from "./utils.mjs";
 
+
 function renderCartContents() {
   const cartFooter = document.querySelector(".cart-footer");
   const cartTotal = document.querySelector(".cart-total");
   const productList = document.querySelector(".product-list");
+  
+
 
   // If we're not on the cart page (or DOM not ready), do nothing.
   if (!productList || !cartFooter || !cartTotal) return;
