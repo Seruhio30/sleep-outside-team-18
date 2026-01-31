@@ -122,3 +122,23 @@ export function animateCartCount() {
     }, 300);
   }
 }
+
+export function renderBreadcrumb({ category = null, count = null }) {
+  const breadcrumb = document.querySelector("#breadcrumb");
+  if (!breadcrumb) return;
+
+  // Home page → no breadcrumb
+  if (!category) {
+    breadcrumb.innerHTML = "";
+    return;
+  }
+
+  // Product list page
+  if (count !== null) {
+    breadcrumb.textContent = `${category} → (${count} items)`;
+    return;
+  }
+
+  // Product detail page
+  breadcrumb.textContent = category;
+}
