@@ -12,7 +12,12 @@ function renderCartContents() {
   const htmlItems = cartItems.map((item) => cartItemTemplate(item));
 
   if (cartItems.length > 0) {
-    const total = cartItems.reduce((sum, item) => sum + (item.FinalPrice * (item.quantity || 1)), 0);
+    const total = cartItems.reduce(
+      (sum, item) => sum + item.FinalPrice * (item.quantity || 1),
+      0
+    );
+
+
     cartFooter.classList.remove("hide");
     cartTotal.textContent = `Total: $${total.toFixed(2)}`;
   } else {
@@ -51,6 +56,10 @@ function cartItemTemplate(item) {
     </div>
     <p class="cart-card__price">$${itemTotal.toFixed(2)}</p>
     
+    <p class="cart-card__quantity">qty: ${item.quantity || 1}</p>
+
+    <p class="cart-card__price">$${item.FinalPrice}</p>
+    <span data-id="${item.Id}" class="cart-card__remove">x</span>
   </li>`;
 }
 
