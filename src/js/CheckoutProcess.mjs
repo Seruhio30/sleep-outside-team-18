@@ -31,11 +31,12 @@ export default class CheckoutProcess {
       });
     }
 
-    // 4) submit
+    // 4) submit + HTML validation
     const form = document.querySelector("#checkoutform");
     if (form) {
       form.addEventListener("submit", (e) => {
         e.preventDefault();
+
         if (form.checkValidity()) {
           this.checkout(form);
         } else {
@@ -46,7 +47,11 @@ export default class CheckoutProcess {
   }
 
   calculateItemSubTotal() {
-    this.itemTotal = this.list.reduce((total, item) => total + item.FinalPrice, 0);
+    //si ya usas quantity, esto lo respeta
+    this.itemTotal = this.list.reduce(
+      (total, item) => total + item.FinalPrice * (item.quantity || 1),
+      0
+    );
   }
 
   displayItemSubTotal() {
@@ -57,7 +62,8 @@ export default class CheckoutProcess {
   calculateOrderTotal() {
     this.tax = this.itemTotal * 0.06;
 
-    const itemCount = this.list.length;
+    //shipping basado en cantidad total (no solo items distintos)
+    const itemCount = this.list.reduce((sum, item) => sum + (item.quantity || 1), 0);
     this.shipping = itemCount > 0 ? 10 + (itemCount - 1) * 2 : 0;
 
     this.orderTotal = this.itemTotal + this.tax + this.shipping;
@@ -81,13 +87,14 @@ export default class CheckoutProcess {
       id: item.Id,
       name: item.Name,
       price: item.FinalPrice,
-      quantity: 1,
+       //W04 + extra compatible
+      quantity: item.quantity || 1,
     }));
   }
 
   // required by activity
   async checkout(form) {
-    // asegurarse de que los totales estén calculados
+    // asegurar totales calculados
     this.calculateOrderTotal();
 
     // convertir form a objeto
@@ -106,19 +113,29 @@ export default class CheckoutProcess {
     order.orderTotal = this.orderTotal.toFixed(2);
     order.shipping = this.shipping;
     order.tax = this.tax.toFixed(2);
-    console.log("order:");
-    console.log(order);
 
-    // enviar orden al servidor
-    //await this.services.checkout(order);
     try {
+      //llamar al servicio
       const response = await this.services.checkout(order);
-      console.log("response:");
-      console.log(response);
+      console.log("checkout success:", response);
+
+      //HAPPY PATH: limpiar carrito y redirigir
+      localStorage.removeItem(this.key); 
+      window.location.href = "/checkout/success.html";
     } catch (err) {
-      console.log(err);
+      console.error("checkout error:", err);
+
+      //error detallado del server (lo que pide W04)
+      if (err?.name === "servicesError") {
+        const msg =
+          err.message?.message ||
+          err.message?.error ||
+          "Checkout failed. Please check your info and try again.";
+        alert(msg); 
+        return;
+      }
+
+      alert("Checkout failed. Please try again.");
     }
-
   }
-
 }
