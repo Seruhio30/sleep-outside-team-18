@@ -1,17 +1,6 @@
-import { renderListWithTemplate } from "./utils.mjs";
+import { renderListWithTemplate, renderBreadcrumb } from "./utils.mjs";
 
-/*function productCardTemplate(product) {
-    return `
-    <li class="product-card">
-      <a href="product_pages/?product=${product.Id}">
-        <img src="${product.Image}" alt="${product.Name}">
-        <h2>${product.Brand.Name}</h2>
-        <h3>${product.Name}</h3>
-        <p class="product-card__price">$${product.FinalPrice}</p>
-      </a>
-    </li>
-    `;
-}*/
+
 
 function productCardTemplate(product) {
     // Calcular descuento
@@ -53,8 +42,9 @@ function calculateDiscount(suggestedPrice, finalPrice) {
 }
 
 export default class ProductList {
-    constructor(category, dataSource, listElement) {
+    constructor(category, search, dataSource, listElement) {
         this.category = category;
+        this.search = search;
         this.dataSource = dataSource;
         this.listElement = listElement;
         this.products = []; // Guardar productos para poder ordenarlos
@@ -66,11 +56,30 @@ export default class ProductList {
         this.renderList(list);
     }*/
     async init() {
-        const list = await this.dataSource.getData(this.category);
+        let list;
+        let displayTitle;
+        
+        // Si es búsqueda, usar findProductByName
+        if (this.search) {
+            list = await this.dataSource.findProductByName(this.search);
+            displayTitle = `${this.search}`;
+            
+        } 
+        // Si es categoría, usar getData
+        else if (this.category) {
+            list = await this.dataSource.getData(this.category);
+            displayTitle = this.category;
+        }
+        
         this.products = list; // Guardar los productos
         this.renderList(list);
-        document.querySelector(".title").textContent = this.category;
-
+        document.querySelector(".title").textContent = displayTitle;
+        
+        // Breadcrumb: "Category → (X items)" o "Search Results → (X items)"
+        renderBreadcrumb({
+            category: displayTitle,
+            count: list.length
+        });
         // Agregar event listener para el selector de ordenamiento
         this.sortListener();
     }

@@ -1,8 +1,16 @@
-import { setLocalStorage, updateCartCount } from "./utils.mjs";
+import {
+  setLocalStorage,
+  updateCartCount,
+  animateCart,
+  animateCartCount,
+  renderBreadcrumb,
+  addToWishlist
+} from "./utils.mjs";
 
 export default class ProductDetails {
-  constructor(productId, datasource) {
+  constructor(productId, datasource, search) {
     this.productId = productId;
+    this.search = search;
     this.product = {};
     this.datasource = datasource;
   }
@@ -12,6 +20,8 @@ export default class ProductDetails {
     // Obtener el producto por id
     this.product = await this.datasource.findProductById(this.productId);
 
+    renderBreadcrumb({ category: this.product.Category });
+
     // Renderizar detalles
     this.renderProductDetails();
 
@@ -19,6 +29,16 @@ export default class ProductDetails {
     document
       .getElementById("addToCart")
       .addEventListener("click", this.addProductToCart.bind(this));
+
+    //para wishList
+    document
+      .getElementById("addToWishlist")
+      .addEventListener("click", () => {
+        const added = addToWishlist(this.product);
+        // feedback simple (si tienes alertMessage, úsalo)
+        alert(added ? "Added to wishlist!" : "Already in wishlist!");
+      });
+
   }
 
   renderProductDetails() {
@@ -71,6 +91,9 @@ function productDetailsTemplate(product) {
 
   document.querySelector("h3").textContent = product.NameWithoutBrand;
 
+
+  //formato de imagen x colores  product.Colors[0].ColorPreviewImageSrc
+
   const productImage = document.querySelector(".product-image");
   productImage.src =
     product.Images?.PrimaryExtraLarge ||
@@ -100,8 +123,65 @@ function productDetailsTemplate(product) {
     priceElement.textContent = `$${product.FinalPrice}`;
   }
 
-  document.querySelector(".product__color").textContent =
-    product.Colors?.[0]?.ColorName || "";
+  //logica antigua 
+  // document.querySelector(".product__color").textContent =
+  // product.Colors?.map(c => c.ColorName) || ""; //itera los colores si hay más de uno
+  //product.Colors?.[0]?.ColorName || "";
+
+
+  //logica para renderizar colores como links
+  const container = document.querySelector(".product__color");
+  container.innerHTML = product.Colors?.map(c => {
+    return `<a href="#" 
+             class="product__color" 
+             data-img="${c.ColorPreviewImageSrc}"
+             data-text="${c.ColorName}">
+             ${c.ColorName} - 
+          </a>`;
+  }).join("") || "";
+
+ 
+  // Añadir listeners después de renderizar
+  container.querySelectorAll(".product__color").forEach(link => {
+    link.addEventListener("click", (event) => {
+      event.preventDefault(); // evitar navegación
+      const newSrc = event.currentTarget.dataset.img;
+      const productImage = document.querySelector(".product-image");
+      const colorText = event.currentTarget.dataset.text;
+      productImage.src = newSrc;
+
+   // Recuperar array existente
+    let descripctionsProducts = JSON.parse(localStorage.getItem("so-descripctionsProducts")) || [];
+    if (!Array.isArray(descripctionsProducts)) descripctionsProducts = [];
+
+    // Buscar si ya existe este producto en el array
+    const existingItemIndex = descripctionsProducts.findIndex(
+      (item) => item.productId === product.Id
+    );
+
+    if (existingItemIndex !== -1) {
+      // Si ya existe, sobrescribimos el color e imagen
+      descripctionsProducts[existingItemIndex] = {
+        productId: product.Id,
+        newSrc,
+        colorText
+      };
+    } else {
+      // Si no existe, lo agregamos como nuevo
+      descripctionsProducts.push({
+        productId: product.Id,
+        newSrc,
+        colorText
+      });
+    }
+
+    // Guardar array actualizado
+    setLocalStorage("so-descripctionsProducts", descripctionsProducts);
+
+       
+
+    });
+  });
 
   document.querySelector(".product__description").innerHTML =
     product.DescriptionHtmlSimple;
