@@ -112,6 +112,21 @@ export function animateCart() {
   }
 }
 
+export function initLogoAnimation() {
+  const logo = document.querySelector(".logo");
+
+  if (!logo) return;
+
+  logo.addEventListener("click", () => {
+    logo.classList.add("animate");
+
+    setTimeout(() => {
+      logo.classList.remove("animate");
+    }, 500);
+  });
+}
+
+
 // Animate cart count
 export function animateCartCount() {
   const count = document.querySelector('.cart-count');

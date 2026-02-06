@@ -75,8 +75,35 @@ p {
   color: var(--font-body);
 }
 
+.logo {
+  transition: transform 0.3s ease;
+}
+
+.logo:hover {
+  transform: scale(1.05);
+}
+
 .hero {
   position: relative;
+}
+
+.logo.animate {
+  animation: logoBounce 0.9s;
+}
+
+@keyframes logoBounce {
+  0% {
+    transform: scale(1) translateY(0);
+  }
+  30% {
+    transform: scale(1.8) translateY(-10px);
+  }
+  60% {
+    transform: scale(1.0) translateY(5px);
+  }
+  100% {
+    transform: scale(1) translateY(0);
+  }
 }
 
 .hero .logo {
@@ -875,4 +902,4 @@ p.red {
 
 #checkoutform button[type="submit"]:hover {
   background-color: var(--tertiary-color);
-}
+}}
