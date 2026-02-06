@@ -33,3 +33,5 @@ export default class Alert {
     this.mainElement.prepend(section);
   }
 }
+
+ 
